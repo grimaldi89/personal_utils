@@ -4,7 +4,7 @@ set -e
 
 echo "🔧 Checking and adding aliases to ~/.bashrc..."
 
-ALIASES_FILE="./aliases.sh"
+ALIASES_FILE="$(dirname "$0")/aliases.sh"
 
 if [ ! -f "$ALIASES_FILE" ]; then
   echo "❌ File $ALIASES_FILE not found!"

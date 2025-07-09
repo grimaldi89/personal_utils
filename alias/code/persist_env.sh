@@ -29,3 +29,4 @@ fi
 # 4. Apply immediately to the current session
 export "$VAR_NAME=$VAR_VALUE"
 echo "🎉 Variable '$VAR_NAME' is now available and persistent."
+source ~/.bashrc
