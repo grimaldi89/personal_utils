@@ -1,0 +1,23 @@
+name: tests
+
+on:
+  push:
+    paths:
+      - '**/*.sh'
+      - 'tests/**'
+  pull_request:
+    paths:
+      - '**/*.sh'
+      - 'tests/**'
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Run syntax tests
+        run: |
+          make lint
+          make test

@@ -1,5 +1,7 @@
 #!/bin/bash
 # aliases.sh
+set -e
+
 
 alias python='python3'
 alias bashrc='gedit ~/.bashrc && source ~/.bashrc'
