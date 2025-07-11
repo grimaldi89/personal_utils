@@ -23,3 +23,13 @@ The main entry point is `install.sh`, which scans these folders and presents an 
 
 Feel free to inspect each script before running it to understand what will be installed or modified on your system.
 
+## Aliases
+
+Run `alias/install_aliases.sh` to automatically append helpful shortcuts to your
+`~/.bashrc`. After running it you'll be able to launch the installer anywhere by
+simply typing:
+
+```bash
+utils
+```
+
