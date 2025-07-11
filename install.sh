@@ -56,6 +56,10 @@ for idx in "${SELECTION[@]}"; do
   rel_path="${SCRIPT_MAP[$idx]}"
   path="$BASE_DIR/$rel_path"
   if [[ -f "$path" ]]; then
+    echo "🔄 Updating system before running: $path"
+    sudo apt-get update -y
+    sudo apt-get upgrade -y
+    sudo apt-get install -f -y
     echo "🚀 Running: $rel_path"
     chmod +x "$path"
     "$path"

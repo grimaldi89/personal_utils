@@ -2,9 +2,6 @@
 
 set -e
 
-echo "🔧 Updating system and installing prerequisites..."
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl
 
 echo "🔐 Adding Docker's official GPG key..."
 sudo install -m 0755 -d /etc/apt/keyrings

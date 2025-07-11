@@ -19,7 +19,7 @@ echo "✅ Python 3 is available: $(python3 --version)"
 
 # 3. Make sure python3-venv is installed
 echo "🔄 Ensuring python3-venv is installed or up to date..."
-sudo apt-get update -y
+
 sudo apt-get install -y python3-venv
 
 # 4. Create the virtual environment
