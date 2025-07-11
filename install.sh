@@ -53,15 +53,16 @@ read -p $'\n➡️  Enter numbers separated by space (e.g. 1 4 5): ' -a SELECTIO
 echo ""
 # Executa scripts selecionados
 for idx in "${SELECTION[@]}"; do
-  path="${SCRIPT_MAP[$idx]}"
+  rel_path="${SCRIPT_MAP[$idx]}"
+  path="$BASE_DIR/$rel_path"
   if [[ -f "$path" ]]; then
-    echo "🚀 Running: $path"
+    echo "🚀 Running: $rel_path"
     chmod +x "$path"
     "$path"
-    echo "✅ Done: $path"
+    echo "✅ Done: $rel_path"
     echo "------------------------"
   else
-    echo "❌ Script not found: $path"
+    echo "❌ Script not found: $rel_path"
   fi
 done
 
