@@ -1,0 +1,25 @@
+# Ignore Python virtual environments
+venv/
+.venv/
+ENV/
+
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Vim swap files
+*.swp
+
+# OS-specific files
+.DS_Store
+
+# Node modules
+node_modules/
+
+# Build artifacts
+build/
+dist/
