@@ -8,30 +8,30 @@ BASE_DIR="$(dirname "$0")"
 SEARCH_DIRS=("tools" "gcloud" "airbyte" "alias")
 SCRIPTS=()
 
-# Encontra todos os .sh dentro dos diretórios definidos
+# Find all .sh files within the defined directories
 for dir in "${SEARCH_DIRS[@]}"; do
   while IFS= read -r -d '' file; do
-    SCRIPTS+=("${file#$BASE_DIR/}")  # Remove ./ do início
+    SCRIPTS+=("${file#$BASE_DIR/}")  # Remove ./ from the beginning
   done < <(find "$BASE_DIR/$dir" -type f -name "*.sh" -print0)
 done
 
-# Validação
+# Validation
 if [ ${#SCRIPTS[@]} -eq 0 ]; then
   echo "❌ No .sh scripts found in expected folders."
   exit 1
 fi
 
-# Exibe menu dinâmico
+# Display dynamic menu
 declare -A SCRIPT_MAP
 echo ""
 echo "📂 Select scripts to run:"
 i=1
 for script in "${SCRIPTS[@]}"; do
-  # Nome amigável baseado no nome do script
+  # Friendly name based on the script name
   script_name=$(basename "$script" .sh | sed -E 's/_/ /g' | sed -E 's/\b(.)/\u\1/g')
   folder_name=$(dirname "$script")
   
-  # Ajusta o título
+  # Adjust the title
   if [[ "$script_name" == "Python Venv" ]]; then
     display="Create $script_name ($script)"
   elif [[ "$script_name" == "Persist Env" ]]; then
@@ -47,11 +47,11 @@ for script in "${SCRIPTS[@]}"; do
   ((i++))
 done
 
-# Recebe seleção do usuário
+# Get user selection
 read -p $'\n➡️  Enter numbers separated by space (e.g. 1 4 5): ' -a SELECTION < /dev/tty
 
 echo ""
-# Executa scripts selecionados
+# Run selected scripts
 for idx in "${SELECTION[@]}"; do
   rel_path="${SCRIPT_MAP[$idx]}"
   path="$BASE_DIR/$rel_path"
