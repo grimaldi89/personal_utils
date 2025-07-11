@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Run shellcheck
+        run: |
+          find . -name '*.sh' -print0 | xargs -0 shellcheck
+      - name: Check bash syntax
+        run: |
+          for f in $(find . -name '*.sh'); do
+            bash -n "$f"
+          done

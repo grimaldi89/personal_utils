@@ -33,3 +33,8 @@ simply typing:
 utils
 ```
 
+
+## Continuous Integration
+
+Pull requests run a simple workflow that lints all shell scripts with [ShellCheck](https://www.shellcheck.net/) and checks their syntax with `bash -n`. This helps ensure that installation scripts remain valid without running the heavier installers like Airbyte.
+
