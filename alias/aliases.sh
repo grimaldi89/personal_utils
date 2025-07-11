@@ -1,3 +1,4 @@
+#!/bin/bash
 # aliases.sh
 
 alias python='python3'
