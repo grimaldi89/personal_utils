@@ -1,0 +1,11 @@
+# alias.txt
+# Personal aliases
+
+alias python='python3'
+alias bashrc='gedit ~/.bashrc && source ~/.bashrc'
+alias new_venv='~/Repositories/personal_utils/alias/code/python_venv.sh'
+alias persist_env='bash ~/Repositories/personal_utils/alias/code/persist_env.sh'
+alias utils='bash ~/Repositories/personal_utils/install.sh'
+alias m='make -f ~/Repositories/personal_utils/makefile'
+alias sublime='subl'
+alias ls='eza -la --icons'
