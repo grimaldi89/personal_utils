@@ -18,7 +18,7 @@ help:
 	@echo "  make oh-my-zsh         - Install Oh My Zsh"
 	@echo "  make zsh-customization - Customize Zsh with themes and plugins"
 	@echo "  make sublime           - Install Sublime Text"
-	@echo "  make cursor            - Install Cursor (AppImage integration)"
+	@echo "  make cursor            - Install Cursor (Snap installation)"
 	@echo "  make ripgrep           - Install Ripgrep (fast text search)"
 	@echo "  make open_ssh_client   - Install OpenSSH Client"
 	@echo "  make lint              - Run ShellCheck on scripts"

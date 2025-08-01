@@ -40,7 +40,7 @@ The main entry point is `install.sh`, which scans these folders and presents an 
 ### 📝 Editors & IDEs
 - **Sublime Text** - Fast and lightweight code editor
 - **Gedit** - Simple text editor
-- **Cursor** - AI-first coding environment (AppImage integration)
+- **Cursor** - AI-first coding environment (Snap installation)
 
 ### 🔧 System Tools
 - **OpenSSH Client** - SSH connectivity tools
@@ -100,7 +100,7 @@ make zsh               # Install Zsh
 make oh-my-zsh         # Install Oh My Zsh
 make zsh-customization # Customize Zsh with themes and plugins
 make sublime           # Install Sublime Text
-make cursor            # Install Cursor (AppImage integration)
+make cursor            # Install Cursor (Snap installation)
 make ripgrep           # Install Ripgrep (fast text search)
 make open_ssh_client   # Install OpenSSH Client
 make lint              # Run ShellCheck on scripts
