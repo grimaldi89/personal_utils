@@ -1,4 +1,4 @@
-.PHONY: install aliases docker gcloud gedit git terraform airbyte eza batcat zsh oh-my-zsh zsh-customization sublime ripgrep open_ssh_client help lint test
+.PHONY: install aliases docker gcloud gedit git terraform airbyte eza batcat zsh oh-my-zsh zsh-customization sublime cursor ripgrep open_ssh_client help lint test
 
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -18,6 +18,7 @@ help:
 	@echo "  make oh-my-zsh         - Install Oh My Zsh"
 	@echo "  make zsh-customization - Customize Zsh with themes and plugins"
 	@echo "  make sublime           - Install Sublime Text"
+	@echo "  make cursor            - Install Cursor (AppImage integration)"
 	@echo "  make ripgrep           - Install Ripgrep (fast text search)"
 	@echo "  make open_ssh_client   - Install OpenSSH Client"
 	@echo "  make lint              - Run ShellCheck on scripts"
@@ -64,6 +65,9 @@ zsh-customization:
 
 sublime:
 	@bash $(ROOT)/tools/sublime.sh
+
+cursor:
+	@bash $(ROOT)/tools/cursor.sh
 
 ripgrep:
 	@bash $(ROOT)/tools/ripgrep.sh
