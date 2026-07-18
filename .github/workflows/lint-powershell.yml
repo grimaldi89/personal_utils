@@ -1,0 +1,54 @@
+name: lint-powershell
+
+on:
+  push:
+    paths:
+      - '**/*.ps1'
+  pull_request:
+    paths:
+      - '**/*.ps1'
+
+jobs:
+  syntax-check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for UTF-8 BOM
+        shell: pwsh
+        run: |
+          $missing = @()
+          Get-ChildItem -Path . -Filter *.ps1 -Recurse -File | ForEach-Object {
+              $bytes = [System.IO.File]::ReadAllBytes($_.FullName)
+              $hasBom = $bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF
+              if (-not $hasBom) { $missing += $_.FullName.Substring((Get-Location).Path.Length + 1) }
+          }
+          if ($missing.Count -gt 0) {
+              Write-Host "::error::These .ps1 files are missing a UTF-8 BOM. Windows PowerShell 5.1 reads BOM-less files using the system codepage instead of UTF-8, which corrupts any non-ASCII characters (emoji, accents, curly quotes) and can break parsing entirely:"
+              $missing | ForEach-Object { Write-Host "  $_" }
+              Write-Host "Fix: re-save the file(s) as 'UTF-8 with BOM', or in PowerShell: [System.IO.File]::WriteAllText(`$path, [System.IO.File]::ReadAllText(`$path), (New-Object System.Text.UTF8Encoding(`$true)))"
+              exit 1
+          }
+          Write-Host "All .ps1 files have a UTF-8 BOM."
+
+      # Windows PowerShell 5.1 (not pwsh/PS7) is what the README documents as
+      # the minimum supported version, and it's stricter about encoding than
+      # PS7 - it's the interpreter that actually caught the BOM/emoji bug
+      # this workflow guards against, so the syntax check runs on it too.
+      - name: Check PowerShell 5.1 syntax
+        shell: powershell
+        run: |
+          $errors = $null
+          $tokens = $null
+          $failed = $false
+          Get-ChildItem -Path . -Filter *.ps1 -Recurse -File | ForEach-Object {
+              $null = [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$errors)
+              if ($errors.Count -gt 0) {
+                  Write-Host "::error file=$($_.FullName)::Syntax error(s) found"
+                  $errors | ForEach-Object { Write-Host "  $($_.Message) at line $($_.Extent.StartLineNumber)" }
+                  $script:failed = $true
+              } else {
+                  Write-Host "OK: $($_.FullName)"
+              }
+          }
+          if ($failed) { exit 1 }
