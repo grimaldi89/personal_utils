@@ -1,4 +1,4 @@
-.PHONY: install aliases docker gcloud gedit git terraform airbyte eza batcat zsh oh-my-zsh zsh-customization sublime cursor ripgrep open_ssh_client help lint test
+.PHONY: install aliases docker gcloud gedit git terraform airbyte eza batcat zsh oh-my-zsh zsh-customization sublime cursor ripgrep open_ssh_client pyenv help lint test
 
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -21,6 +21,7 @@ help:
 	@echo "  make cursor            - Install Cursor (Snap installation)"
 	@echo "  make ripgrep           - Install Ripgrep (fast text search)"
 	@echo "  make open_ssh_client   - Install OpenSSH Client"
+	@echo "  make pyenv             - Install pyenv (Python version manager)"
 	@echo "  make lint              - Run ShellCheck on scripts"
 	@echo "  make test              - Run the test suite (syntax + functional tests)"
 
@@ -74,6 +75,9 @@ ripgrep:
 
 open_ssh_client:
 	@bash $(ROOT)/tools/open_ssh_client.sh
+
+pyenv:
+	@bash $(ROOT)/tools/pyenv.sh
 
 lint:
 	@shellcheck --severity=error $(shell git ls-files '*.sh')

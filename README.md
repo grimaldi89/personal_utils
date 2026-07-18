@@ -25,6 +25,7 @@ The main entry point is `install.sh`, which scans these folders and presents an 
 - **Git** - Version control system
 - **Terraform** - Infrastructure as Code
 - **Google Cloud CLI** - Google Cloud Platform tools
+- **pyenv** - Manage and switch between multiple Python versions
 
 ### 🎨 Modern Terminal Tools
 - **Eza** - Modern replacement for `ls` with icons and colors
@@ -68,7 +69,7 @@ You can install specific tools using make commands:
 
 ```bash
 # Development tools
-make docker git terraform
+make docker git terraform pyenv
 
 # Modern terminal tools
 make eza batcat ripgrep
@@ -102,8 +103,9 @@ make sublime           # Install Sublime Text
 make cursor            # Install Cursor (Snap installation)
 make ripgrep           # Install Ripgrep (fast text search)
 make open_ssh_client   # Install OpenSSH Client
+make pyenv             # Install pyenv (Python version manager)
 make lint              # Run ShellCheck on scripts
-make test              # Run script syntax tests
+make test              # Run the test suite (syntax + functional tests)
 make help              # Show all available commands
 ```
 
