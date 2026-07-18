@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Wires alias/aliases.ps1 into your PowerShell $PROFILE. Windows
   equivalent of alias/install_aliases.sh.

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs Docker Desktop on Windows via winget.
 #>

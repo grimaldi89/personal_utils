@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs the Google Cloud CLI on Windows via winget.
 #>

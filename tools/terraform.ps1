@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs Terraform via winget.
 #>

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Interactive menu to install this repo's Windows tools. Equivalent of
   install.sh, adapted for PowerShell/winget instead of apt.

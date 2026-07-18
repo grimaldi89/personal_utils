@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs the OpenSSH Client optional Windows feature.
 .NOTES

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs Airbyte locally on Windows via abctl, using Docker Desktop.
 .NOTES

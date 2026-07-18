@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs eza (a modern replacement for `ls`) via winget.
 #>

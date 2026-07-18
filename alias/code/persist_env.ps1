@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Persists a user environment variable. Windows equivalent of
   alias/code/persist_env.sh.

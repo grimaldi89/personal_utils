@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs bat (a modern replacement for `cat`) via winget.
 .NOTES

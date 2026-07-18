@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs Git for Windows via winget.
 #>

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   PowerShell profile functions - Windows equivalent of alias/alias.txt.
 .NOTES

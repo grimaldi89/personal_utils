@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs ripgrep via winget.
 #>

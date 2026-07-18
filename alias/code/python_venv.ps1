@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Creates a Python virtual environment. Windows equivalent of
   alias/code/python_venv.sh.

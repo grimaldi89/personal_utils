@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs Sublime Text via winget.
 #>

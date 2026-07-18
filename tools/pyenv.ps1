@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs pyenv-win, a Python version manager for Windows (PowerShell port of pyenv).
 .DESCRIPTION

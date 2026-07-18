@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Installs Cursor via winget.
 .NOTES
