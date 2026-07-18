@@ -50,8 +50,22 @@ else {
 
     $zipPath = Join-Path $env:TEMP $asset.name
     Invoke-WebRequest -UseBasicParsing -Uri $asset.browser_download_url -OutFile $zipPath
-    Expand-Archive -Path $zipPath -DestinationPath $installDir -Force
+
+    # The release zip nests abctl.exe under a version-named folder rather than
+    # at its root, so extract to a scratch dir and pull the exe out by name
+    # instead of assuming a flat layout.
+    $extractDir = Join-Path $env:TEMP "abctl-extract-$([Guid]::NewGuid())"
+    Expand-Archive -Path $zipPath -DestinationPath $extractDir -Force
     Remove-Item $zipPath -ErrorAction SilentlyContinue
+
+    $exe = Get-ChildItem -Path $extractDir -Filter 'abctl.exe' -Recurse | Select-Object -First 1
+    if (-not $exe) {
+        Write-Host "❌ abctl.exe not found inside the downloaded archive." -ForegroundColor Red
+        Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+        exit 1
+    }
+    Move-Item -Path $exe.FullName -Destination (Join-Path $installDir 'abctl.exe') -Force
+    Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
 
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     if ($userPath -notlike "*$installDir*") {
