@@ -1,6 +1,6 @@
 # Personal Utilities
 
-This repository provides a collection of Bash scripts to automate common setup tasks on a new machine. The scripts install modern development tools, configure aliases, and help you manage environments with support for both Bash and Zsh shells.
+This repository provides a collection of Bash scripts to automate common setup tasks on a new machine. The scripts install modern development tools, configure aliases, and help you manage environments with support for both Bash and Zsh shells. Most tools also have a PowerShell counterpart for Windows — see [Windows Support](#windows-support).
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ The main entry point is `install.sh`, which scans these folders and presents an 
 - **Git** - Version control system
 - **Terraform** - Infrastructure as Code
 - **Google Cloud CLI** - Google Cloud Platform tools
-- **pyenv** - Manage and switch between multiple Python versions
+- **pyenv** - Manage and switch between multiple Python versions (Linux/macOS via `tools/pyenv.sh`, Windows via `tools/pyenv.ps1`)
 
 ### 🎨 Modern Terminal Tools
 - **Eza** - Modern replacement for `ls` with icons and colors
@@ -131,6 +131,61 @@ utils
 - `ls` - Use Eza with icons and colors
 - `cat` - Use Batcat with syntax highlighting
 - `grep` - Use Ripgrep for faster searches
+
+## Windows Support
+
+Every `tools/*.sh`, `airbyte/airbyte.sh`, and `alias/*.sh` script has a `.ps1` counterpart living right next to it (e.g. `tools/git.sh` / `tools/git.ps1`), installed with [winget](https://learn.microsoft.com/windows/package-manager/winget/) instead of `apt`. There's a PowerShell `install.ps1` mirroring `install.sh`'s interactive menu.
+
+**Not yet run/tested on an actual Windows machine** — this environment had no `pwsh`/Windows available to execute or lint any of it, only hand-review against each tool's documented winget id and install flow. Treat it as a first pass; sanity-check before relying on it, and open an issue/PR if a winget package id has moved.
+
+### Prerequisites
+
+* Windows 10 (1809+) or Windows 11.
+* [winget](https://learn.microsoft.com/windows/package-manager/winget/) — preinstalled on current Windows; otherwise install "App Installer" from the Microsoft Store.
+* PowerShell 5.1+ (built in) or [PowerShell 7](https://github.com/PowerShell/PowerShell).
+
+### Quick Start
+
+```powershell
+# From the repo root, in PowerShell
+powershell -ExecutionPolicy Bypass -File install.ps1
+```
+
+Or install one tool directly, e.g.:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\git.ps1
+```
+
+### What's covered
+
+| Area | Windows script |
+| ---- | -------------- |
+| Docker | `tools/docker.ps1` (Docker Desktop) |
+| Git | `tools/git.ps1` |
+| Terraform | `tools/terraform.ps1` |
+| Google Cloud CLI | `tools/gcloud.ps1` |
+| pyenv | `tools/pyenv.ps1` ([pyenv-win](https://github.com/pyenv-win/pyenv-win), not winget — uses its own official installer) |
+| eza | `tools/eza.ps1` |
+| bat (replaces `cat`) | `tools/bat.ps1` — note the command is `bat`, not `batcat`; the Debian-only rename doesn't apply here |
+| ripgrep | `tools/ripgrep.ps1` |
+| Sublime Text | `tools/sublime.ps1` |
+| Cursor | `tools/cursor.ps1` |
+| OpenSSH Client | `tools/openssh_client.ps1` (Windows optional feature; needs an elevated/Administrator PowerShell) |
+| Airbyte | `airbyte/airbyte.ps1` (downloads `abctl` from its GitHub releases; Docker Desktop required) |
+| Aliases | `alias/install_aliases.ps1` (see below) |
+
+**Not ported:** Zsh, Oh My Zsh, and the Spaceship theme customization don't exist natively on Windows outside WSL, and Gedit has no maintained Windows build/winget package — none of the three have a `.ps1` counterpart. If you want those specifically, use WSL and the regular Bash scripts.
+
+### Aliases on Windows
+
+There's no rc file to append to like `.bashrc`/`.zshrc` — PowerShell has a single `$PROFILE` file, and plain `Set-Alias` can't carry arguments the way `alias new_venv='...'` does in bash. So `alias/aliases.ps1` defines PowerShell **functions** instead (which take precedence over PowerShell's built-in `ls`/`cat` aliases, the same way the bash aliases override the Unix builtins), and `alias/install_aliases.ps1` dot-sources that file into your `$PROFILE`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File alias\install_aliases.ps1
+```
+
+This gives you `utils`, `new_venv`, `persist_env`, `profile` (edit + reload `$PROFILE`), `ls` (eza), `cat` (bat), and `grep` (ripgrep) as functions in every new PowerShell session.
 
 ## Shell Support
 
