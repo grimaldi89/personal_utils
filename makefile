@@ -22,7 +22,7 @@ help:
 	@echo "  make ripgrep           - Install Ripgrep (fast text search)"
 	@echo "  make open_ssh_client   - Install OpenSSH Client"
 	@echo "  make lint              - Run ShellCheck on scripts"
-	@echo "  make test              - Run script syntax tests"
+	@echo "  make test              - Run the test suite (syntax + functional tests)"
 
 install:
 	@bash $(ROOT)/install.sh
@@ -79,4 +79,7 @@ lint:
 	@shellcheck --severity=error $(shell git ls-files '*.sh')
 
 test:
-	@./tests/test_syntax.sh
+	@for t in tests/test_*.sh; do \
+		echo "==> $$t"; \
+		bash "$$t" || exit 1; \
+	done

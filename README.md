@@ -140,7 +140,7 @@ This project supports both Bash and Zsh shells:
 
 ## Development
 
-Run `make lint` to execute ShellCheck on all scripts and `make test` to run simple syntax tests.
+Run `make lint` to execute ShellCheck on all scripts and `make test` to run the test suite in `tests/` — syntax checks plus functional tests for `install.sh`'s script discovery and the alias/env-persistence scripts (run in a sandboxed `$HOME`, so nothing on your real machine is touched).
 
 ## Contributing
 
