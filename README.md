@@ -12,8 +12,7 @@ This repository provides a collection of Bash scripts to automate common setup t
 
 | Folder | Purpose |
 | ------ | ------- |
-| `tools` | Individual installers for utilities like Docker, Git, Terraform, and modern tools |
-| `gcloud` | Installs the Google Cloud CLI |
+| `tools` | Individual installers for utilities like Docker, Git, Terraform, Google Cloud CLI, and modern tools |
 | `airbyte` | Helper for installing [Airbyte](https://airbyte.io/) using Docker |
 | `alias` | Convenience aliases and helper scripts with hybrid Bash/Zsh support |
 
@@ -122,12 +121,14 @@ utils
 - `utils` - Launch the main installer
 - `python` - Use Python 3
 - `bashrc` - Edit and reload bashrc
+- `zshrc` - Edit and reload zshrc
 - `new_venv` - Create Python virtual environment
 - `persist_env` - Persist environment variables
 - `m` - Run make commands
 - `sublime` - Open Sublime Text
 - `ls` - Use Eza with icons and colors
 - `cat` - Use Batcat with syntax highlighting
+- `grep` - Use Ripgrep for faster searches
 
 ## Shell Support
 

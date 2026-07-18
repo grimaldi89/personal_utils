@@ -9,7 +9,7 @@ if ! command -v apt-get >/dev/null; then
 fi
 
 BASE_DIR="$(dirname "$0")"
-SEARCH_DIRS=("tools" "gcloud" "airbyte" "alias")
+SEARCH_DIRS=("tools" "airbyte" "alias")
 SCRIPTS=()
 
 # Locate all scripts

@@ -47,6 +47,8 @@ else
     echo "🎯 Using bash configuration..."
 fi
 
+REPO_DIR="$(cd "$(dirname "$ALIASES_FILE")/.." && pwd)"
+
 echo "🔧 Checking and adding aliases to $ALIASES_TARGET..."
 
 if [ ! -f "$ALIASES_FILE" ]; then
@@ -105,6 +107,9 @@ while IFS= read -r line; do
   if [[ -z "$line" || "$line" =~ ^# ]]; then
     continue
   fi
+
+  # Resolve the repo-relative placeholder to this machine's actual clone location
+  line="${line//__PERSONAL_UTILS_DIR__/$REPO_DIR}"
 
   if [[ "$line" =~ alias[[:space:]]+([a-zA-Z0-9_]+)=\'([^\']+)\' ]]; then
     ALIAS_NAME="${BASH_REMATCH[1]}"
