@@ -4,9 +4,12 @@ on:
   push:
     paths:
       - '**/*.ps1'
+      - '.github/workflows/lint-powershell.yml'
   pull_request:
     paths:
       - '**/*.ps1'
+      - '.github/workflows/lint-powershell.yml'
+  workflow_dispatch: {}
 
 jobs:
   syntax-check:
