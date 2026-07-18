@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Shared helpers for tests/test_*.sh functional tests.
 # Meant to be sourced, not executed directly.
 
