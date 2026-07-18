@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 echo "🔐 Adding HashiCorp GPG key and repository..."
 

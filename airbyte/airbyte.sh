@@ -1,16 +1,19 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DOCKER_SCRIPT="$SCRIPT_DIR/../tools/docker.sh"
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
   echo "🐳 Docker not found. Running docker.sh..."
 
-  if [ -f "./docker.sh" ]; then
-    chmod +x ./docker.sh
-    ./docker.sh
+  if [ -f "$DOCKER_SCRIPT" ]; then
+    chmod +x "$DOCKER_SCRIPT"
+    "$DOCKER_SCRIPT"
   else
-    echo "❌ docker.sh not found in the current directory!"
+    echo "❌ docker.sh not found at $DOCKER_SCRIPT!"
     exit 1
   fi
 else

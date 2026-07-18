@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # Exit if any command fails
+set -eo pipefail  # Exit if any command fails, including within a pipe
 
 echo "🔎 Checking if gcloud CLI is already installed..."
 if command -v gcloud &> /dev/null; then
