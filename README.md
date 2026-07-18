@@ -25,7 +25,7 @@ The main entry point is `install.sh`, which scans these folders and presents an 
 - **Git** - Version control system
 - **Terraform** - Infrastructure as Code
 - **Google Cloud CLI** - Google Cloud Platform tools
-- **pyenv** - Manage and switch between multiple Python versions
+- **pyenv** - Manage and switch between multiple Python versions (Linux/macOS via `tools/pyenv.sh`, Windows via `tools/pyenv.ps1`)
 
 ### 🎨 Modern Terminal Tools
 - **Eza** - Modern replacement for `ls` with icons and colors
@@ -131,6 +131,16 @@ utils
 - `ls` - Use Eza with icons and colors
 - `cat` - Use Batcat with syntax highlighting
 - `grep` - Use Ripgrep for faster searches
+
+## Windows Support
+
+This repository is built around `apt` and is not meant to run on Windows as a whole (`install.sh`, the aliases, and every other tool script assume a Debian-based system). The one exception is **pyenv**: `tools/pyenv.ps1` installs [pyenv-win](https://github.com/pyenv-win/pyenv-win) via its official installer. Run it from a PowerShell prompt:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\pyenv.ps1
+```
+
+Unlike the Unix installer, there's no rc file to edit — pyenv-win's own installer sets the `PYENV`/`PYENV_ROOT`/`PYENV_HOME` environment variables and updates your user `PATH` directly via the Windows registry. Close and reopen PowerShell afterward for those changes to take effect.
 
 ## Shell Support
 
