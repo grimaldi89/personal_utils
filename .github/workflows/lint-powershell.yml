@@ -52,3 +52,24 @@ jobs:
               }
           }
           if ($failed) { exit 1 }
+
+      # -List only does script discovery (no winget, no installs), so it is
+      # safe to actually execute on the runner under both interpreters.
+      - name: Smoke-test install.ps1 -List (Windows PowerShell 5.1)
+        shell: powershell
+        run: |
+          ./install.ps1 -List
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Smoke-test install.ps1 -List (PowerShell 7)
+        shell: pwsh
+        run: |
+          ./install.ps1 -List
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Unknown tool names are rejected
+        shell: pwsh
+        run: |
+          ./install.ps1 definitely-not-a-tool
+          if ($LASTEXITCODE -eq 0) { Write-Host "::error::expected a non-zero exit code"; exit 1 }
+          exit 0
