@@ -5,6 +5,8 @@
 
 $ErrorActionPreference = 'Stop'
 
+. (Join-Path $PSScriptRoot '..\lib\winget.ps1')
+
 Write-Host "🐳 Installing Docker Desktop..." -ForegroundColor Cyan
 
 if (Get-Command docker -ErrorAction SilentlyContinue) {
@@ -13,12 +15,7 @@ if (Get-Command docker -ErrorAction SilentlyContinue) {
     exit 0
 }
 
-if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ winget is not available. Install 'App Installer' from the Microsoft Store, then re-run this script." -ForegroundColor Red
-    exit 1
-}
-
-winget install --id Docker.DockerDesktop --source winget --accept-source-agreements --accept-package-agreements -e
+Install-WingetPackage -Id 'Docker.DockerDesktop' -Name 'Docker Desktop'
 
 Write-Host "🎉 Docker Desktop installed!" -ForegroundColor Green
 Write-Host "💡 Launch Docker Desktop from the Start menu at least once to finish setup (it needs WSL2 enabled)."

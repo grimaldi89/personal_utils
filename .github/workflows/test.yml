@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - '**/*.sh'
+      - '**/*.ps1'
       - 'tests/**'
   pull_request:
     paths:
       - '**/*.sh'
+      - '**/*.ps1'
       - 'tests/**'
 
 jobs:

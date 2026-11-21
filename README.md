@@ -15,6 +15,7 @@ This repository provides a collection of Bash scripts to automate common setup t
 | `tools` | Individual installers for utilities like Docker, Git, Terraform, Google Cloud CLI, and modern tools |
 | `airbyte` | Helper for installing [Airbyte](https://airbyte.io/) using Docker |
 | `alias` | Convenience aliases and helper scripts with hybrid Bash/Zsh support |
+| `lib` | Shared PowerShell helper used by the Windows installers |
 
 The main entry point is `install.sh`, which scans these folders and presents an interactive menu so you can choose which scripts to execute.
 
@@ -134,9 +135,9 @@ utils
 
 ## Windows Support
 
-Every `tools/*.sh`, `airbyte/airbyte.sh`, and `alias/*.sh` script has a `.ps1` counterpart living right next to it (e.g. `tools/git.sh` / `tools/git.ps1`), installed with [winget](https://learn.microsoft.com/windows/package-manager/winget/) instead of `apt`. There's a PowerShell `install.ps1` mirroring `install.sh`'s interactive menu.
+Every `tools/*.sh`, `airbyte/airbyte.sh`, and `alias/*.sh` script has a `.ps1` counterpart living right next to it (e.g. `tools/git.sh` / `tools/git.ps1`), installed with [winget](https://learn.microsoft.com/windows/package-manager/winget/) instead of `apt`. The PowerShell `install.ps1` mirrors both `install.sh`'s interactive menu and the makefile's per-tool targets.
 
-**Not yet run/tested on an actual Windows machine** — this environment had no `pwsh`/Windows available to execute or lint any of it, only hand-review against each tool's documented winget id and install flow. Treat it as a first pass; sanity-check before relying on it, and open an issue/PR if a winget package id has moved.
+**Not yet run on an actual Windows machine.** CI parses every `.ps1` under Windows PowerShell 5.1 and smoke-tests `install.ps1 -List`, and `make test` checks that each Linux script has a counterpart — but the installs themselves have only been hand-reviewed against each tool's documented winget id and install flow. Sanity-check before relying on it, and open an issue/PR if a winget package id has moved.
 
 ### Prerequisites
 
@@ -151,16 +152,35 @@ Every `tools/*.sh`, `airbyte/airbyte.sh`, and `alias/*.sh` script has a `.ps1` c
 powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
-Or install one tool directly, e.g.:
+Windows has no `make`, so the repo ships a `make.cmd` that forwards to `install.ps1`. The Linux commands work as typed, with `.\` in front (PowerShell doesn't run programs from the current folder without it):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File tools\git.ps1
+.\make install          # interactive menu
+.\make git docker       # install specific tools
+.\make help             # list everything
 ```
+
+`make.cmd` also sidesteps the execution policy, so there's no `-ExecutionPolicy Bypass` to type. Calling `install.ps1` directly does the same thing:
+
+```powershell
+# Windows version of `make git docker terraform`
+powershell -ExecutionPolicy Bypass -File install.ps1 git docker terraform
+
+# See every name you can pass (the Windows `make help`)
+powershell -ExecutionPolicy Bypass -File install.ps1 -List
+```
+
+The Linux make target names are accepted too and resolve to their Windows counterpart — `batcat` → `bat`, `zsh` → `powershell`, `oh-my-zsh` → `oh-my-posh`, `zsh-customization` → `powershell-customization`, `gedit` → `notepadplusplus`, `aliases` → `install_aliases`.
+
+Each script can also still be run on its own, e.g. `powershell -ExecutionPolicy Bypass -File tools\git.ps1`.
+
+If an install fails (winget error, unknown package id), the script says so and `install.ps1` exits non-zero and lists what failed, instead of reporting success.
 
 ### What's covered
 
-| Area | Windows script |
-| ---- | -------------- |
+| Linux | Windows script |
+| ----- | -------------- |
+| `make install` / `make <tool>` | `.\make install` / `.\make <tool>` (`make.cmd` → `install.ps1`) |
 | Docker | `tools/docker.ps1` (Docker Desktop) |
 | Git | `tools/git.ps1` |
 | Terraform | `tools/terraform.ps1` |
@@ -173,9 +193,15 @@ powershell -ExecutionPolicy Bypass -File tools\git.ps1
 | Cursor | `tools/cursor.ps1` |
 | OpenSSH Client | `tools/openssh_client.ps1` (Windows optional feature; needs an elevated/Administrator PowerShell) |
 | Airbyte | `airbyte/airbyte.ps1` (downloads `abctl` from its GitHub releases; Docker Desktop required) |
+| Zsh | `tools/powershell.ps1` — PowerShell 7 (`pwsh`), the modern shell on Windows |
+| Oh My Zsh | `tools/oh-my-posh.ps1` — [Oh My Posh](https://ohmyposh.dev/) prompt theme engine |
+| Zsh Customization | `tools/powershell-customization.ps1` — Spaceship theme (Oh My Posh), git completion ([posh-git](https://github.com/dahlbyk/posh-git)), history autosuggestions and syntax highlighting (PSReadLine) |
+| Gedit | `tools/notepadplusplus.ps1` — Notepad++ |
 | Aliases | `alias/install_aliases.ps1` (see below) |
 
-**Not ported:** Zsh, Oh My Zsh, and the Spaceship theme customization don't exist natively on Windows outside WSL, and Gedit has no maintained Windows build/winget package — none of the three have a `.ps1` counterpart. If you want those specifically, use WSL and the regular Bash scripts.
+Zsh, Oh My Zsh and Gedit themselves don't exist natively on Windows, so those four rows install the closest Windows equivalent rather than the same program. If you want the originals, use WSL and the regular Bash scripts.
+
+Unlike `zsh-customization.sh`, which replaces `~/.zshrc`, `powershell-customization.ps1` only adds one marked block to your `$PROFILE` (after backing it up); re-running it replaces just that block. Windows PowerShell 5.1 and PowerShell 7 have separate `$PROFILE` files, so run it — and `install_aliases.ps1` — from the shell you actually use.
 
 ### Aliases on Windows
 
@@ -185,7 +211,21 @@ There's no rc file to append to like `.bashrc`/`.zshrc` — PowerShell has a sin
 powershell -ExecutionPolicy Bypass -File alias\install_aliases.ps1
 ```
 
-This gives you `utils`, `new_venv`, `persist_env`, `profile` (edit + reload `$PROFILE`), `ls` (eza), `cat` (bat), and `grep` (ripgrep) as functions in every new PowerShell session.
+This gives you the following functions in every new PowerShell session:
+
+| Linux alias | Windows function |
+| ----------- | ---------------- |
+| `utils` | `utils` — launch the installer menu |
+| `m <target>` | `m <tool> [<tool> ...]` — install tools by name; `m` alone lists them |
+| `new_venv` | `new_venv` |
+| `persist_env` | `persist_env` (user environment variable in the registry) |
+| `bashrc` / `zshrc` | `profile` — open `$PROFILE` in Sublime Text (Notepad if `subl` isn't installed) |
+| `sublime` | `sublime` |
+| `ls` | `ls` (eza) |
+| `cat` | `cat` (bat) |
+| `grep` | `grep` (ripgrep) |
+
+`cat` and `grep` accept piped input (`git log | grep fix`). There's no `python` → `python3` alias because the Windows Python installer already names the command `python`.
 
 ## Shell Support
 
@@ -197,7 +237,9 @@ This project supports both Bash and Zsh shells:
 
 ## Development
 
-Run `make lint` to execute ShellCheck on all scripts and `make test` to run the test suite in `tests/` — syntax checks plus functional tests for `install.sh`'s script discovery and the alias/env-persistence scripts (run in a sandboxed `$HOME`, so nothing on your real machine is touched).
+Run `make lint` to execute ShellCheck on all scripts and `make test` to run the test suite in `tests/` — syntax checks plus functional tests for `install.sh`'s script discovery and the alias/env-persistence scripts (run in a sandboxed `$HOME`, so nothing on your real machine is touched), and static checks that every Linux script has a `.ps1` counterpart saved as UTF-8 with BOM.
+
+When adding a tool, add both `tools/<name>.sh` and `tools/<name>.ps1`. winget-based installers dot-source `lib/winget.ps1` and call `Install-WingetPackage`, which handles the missing-winget and failed-install cases.
 
 ## Contributing
 
