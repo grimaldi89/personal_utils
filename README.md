@@ -152,7 +152,15 @@ Every `tools/*.sh`, `airbyte/airbyte.sh`, and `alias/*.sh` script has a `.ps1` c
 powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
-Or skip the menu and name the tools, the way you would with `make` on Linux:
+Windows has no `make`, so the repo ships a `make.cmd` that forwards to `install.ps1`. The Linux commands work as typed, with `.\` in front (PowerShell doesn't run programs from the current folder without it):
+
+```powershell
+.\make install          # interactive menu
+.\make git docker       # install specific tools
+.\make help             # list everything
+```
+
+`make.cmd` also sidesteps the execution policy, so there's no `-ExecutionPolicy Bypass` to type. Calling `install.ps1` directly does the same thing:
 
 ```powershell
 # Windows version of `make git docker terraform`
@@ -172,7 +180,7 @@ If an install fails (winget error, unknown package id), the script says so and `
 
 | Linux | Windows script |
 | ----- | -------------- |
-| `make install` / `make <tool>` | `install.ps1` / `install.ps1 <tool>` |
+| `make install` / `make <tool>` | `.\make install` / `.\make <tool>` (`make.cmd` → `install.ps1`) |
 | Docker | `tools/docker.ps1` (Docker Desktop) |
 | Git | `tools/git.ps1` |
 | Terraform | `tools/terraform.ps1` |

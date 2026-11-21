@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - '**/*.ps1'
+      - '**/*.cmd'
   pull_request:
     paths:
       - '**/*.ps1'
+      - '**/*.cmd'
 
 jobs:
   syntax-check:
@@ -73,3 +75,9 @@ jobs:
           ./install.ps1 definitely-not-a-tool
           if ($LASTEXITCODE -eq 0) { Write-Host "::error::expected a non-zero exit code"; exit 1 }
           exit 0
+
+      - name: Smoke-test make.cmd
+        shell: cmd
+        run: |
+          call make.cmd help || exit /b 1
+          call make.cmd || exit /b 1

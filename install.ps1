@@ -12,6 +12,10 @@
 .EXAMPLE
   .\install.ps1 -List
   Lists the names that can be passed on the command line.
+.EXAMPLE
+  .\make install
+  make.cmd forwards to this script, so the Linux commands work as typed
+  (prefixed with .\ in PowerShell): .\make install, .\make git, .\make help.
 #>
 param(
     [switch]$List,
@@ -101,6 +105,11 @@ function Invoke-UtilScript {
     Write-Host "------------------------"
     return $ok
 }
+
+# `make`-style targets, so make.cmd can forward its arguments unchanged:
+# `help` lists the tools and a lone `install` opens the menu.
+if ($Tools -contains 'help') { $List = $true }
+if ($Tools -and $Tools.Count -eq 1 -and $Tools[0] -eq 'install') { $Tools = @() }
 
 if ($List) {
     Write-Host "Available tools (run: .\install.ps1 <name> [<name> ...]):"
